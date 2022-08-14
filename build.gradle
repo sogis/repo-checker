@@ -1,0 +1,59 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.2'
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+    id 'java'
+    id 'org.springframework.experimental.aot' version '0.12.1'
+}
+
+group = 'ch.so.agi.repochecker'
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+compileJava {
+    options.compilerArgs.addAll(['--release', '17'])
+}
+
+bootJar {
+   archiveName = baseName + "-" + version + "-exec.jar"
+}
+
+repositories {
+    maven { url 'https://repo.spring.io/release' }
+    maven { url 'https://jars.interlis.ch/' }
+    mavenCentral()
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'ch.interlis:ili2c-tool:5.2.7'
+        force 'ch.interlis:ili2c-core:5.2.7'    
+        //force 'ch.interlis:iox-ili:1.21.11'    
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    implementation 'ch.interlis:ili2c-tool:5.2.7'
+    implementation 'ch.interlis:ili2c-core:5.2.7'
+    implementation 'ch.interlis:ilivalidator:1.11.14'
+    implementation 'com.vividsolutions:jts-core:1.14.0' // Warum nötig? 
+    
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+nativeBuild {
+    verbose = true
+    fallback = false
+    //buildArgs.add("--libc=musl")
+    //buildArgs.add("--static")
+}
