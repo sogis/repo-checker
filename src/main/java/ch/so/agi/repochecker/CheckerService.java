@@ -67,6 +67,8 @@ public class CheckerService {
         
         // - Forschleife nicht hier? Sondern im Contrller? Resp. config.addFileEntry() ist immer ein Repo.
         
+        // - oder doch Work nennen und die ilis dort rein kopieren. Bessere Transparenz.
+        
         try {
             Iterator<FileEntry> reposi = config.iteratorFileEntry();
             while (reposi.hasNext()) {
@@ -95,7 +97,6 @@ public class CheckerService {
                     // Im Gegensatz zu ili2c, der ggü XSD prüft.
                     ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
                     Resource[] resources = resolver.getResources("classpath:ili/*.ili");
-                    log.info("Found " + String.valueOf(resources.length) + " local models.");
                     for (Resource resource : resources) {
                         InputStream is = resource.getInputStream();
                         File iliFile = Paths.get(ilicacheFolder.getAbsolutePath(), resource.getFilename()).toFile();
@@ -104,12 +105,12 @@ public class CheckerService {
                         //IOUtils.closeQuietly(is);
                     }
                     
-                    EhiLogger.getInstance().setTraceFilter(false);
+                    //EhiLogger.getInstance().setTraceFilter(false);
                     
                     Settings ilivalidatorSettings = new Settings();
 //                    settings.setValue(Validator.SETTING_LOGFILE, logFileName);
 //                    settings.setValue(Validator.SETTING_XTFLOG, logFileName + ".xtf");
-                    ilivalidatorSettings.setValue(Validator.SETTING_ILIDIRS, "%ITF_DIR;http://models.interlis.ch/;%JAR_DIR/ilimodels;"+ilicacheFolder.getAbsolutePath());//TODO hat das Implikationen?
+                    ilivalidatorSettings.setValue(Validator.SETTING_ILIDIRS, ilicacheFolder.getAbsolutePath()+";%ITF_DIR;http://models.interlis.ch/;%JAR_DIR/ilimodels");//TODO hat das Implikationen?
                     boolean valid = Validator.runValidation(ilimodelsXmlFile.getAbsolutePath(), ilivalidatorSettings);
 
                     
