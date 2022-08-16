@@ -8,6 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link th:href="@{/css/fonts.css}" rel="stylesheet" />
     <link th:href="@{/css/repochecker.css}" rel="stylesheet" />
+    <link th:href="@{/css/repochecker.css}" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -18,87 +20,36 @@
 </head>
 
 <body>
-    <div class="container"> Hallo Welt. foo
+    <div class="container">
+        <div id=title>
+            INTERLIS Repository Checker
+        </div>
     
-	<table style="border: solid 1px black;">
+	<table class="styled-table">
+	    <colgroup>
+	        <col span="1" style="width:40%">
+            <col span="1" style="width:20%">
+            <col span="1" style="width:20%">
+            <col span="1" style="width:20%">
+	    </colgroup>
 	    <thead>
 	        <tr>
-	            <th>Roll No.</th>
-	            <th>Score</th>
+	            <th>Repository</th>
+                <th>ilisite.xml</th>
+                <th>ilimodels.xml</th>
+                <th>Models</th>
 	        </tr>
 	    </thead>
 	    <tbody>
 	        <tr th:each="iliRepo: ${repositories}">
 	            <td th:text="${iliRepo.key}" />
-	            <td th:text="${iliRepo.value.ident}" />
+                <td th:text="${iliRepo.value.results['ILISITE_XML'].valid}" />
+                <td th:attr="class=${iliRepo.value.results['ILIMODELS_XML'].valid ? 'success-cell' : 'fail-cell'}" 
+                    th:text="${iliRepo.value.results['ILIMODELS_XML'].valid}" />
 	        </tr>
 	    </tbody>
 	</table>
 
-    <div class="grid-container">
-	    <a class="feature" href="download.html">
-	        <div class="grid-item">
-	            <div class="grid-item-paragraph">
-	                <div class="subgrid-container">
-	                    <div class="subgrid-child">
-	                        <span style="color:rgb(1, 68, 136);" class="material-icons-outlined md-192">file_download</span>
-	                    </div>
-	                    <div class="subgrid-child">
-	                        <div class="grid-item-title">Download</div>
-	                         <div style="text-align:justify;">Lade die verschiedenen ili2db-Varianten, ilivalidator, ili2c und INTERLIS-UML-Editor herunter.</div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	    </a>
-	    
-        <a class="feature" href="download.html">
-            <div class="grid-item">
-                <div class="grid-item-paragraph">
-                    <div class="subgrid-container">
-                        <div class="subgrid-child">
-                            <span style="color:rgb(1, 68, 136);" class="material-icons-outlined md-192">file_download</span>
-                        </div>
-                        <div class="subgrid-child">
-                            <div class="grid-item-title">Download</div>
-                             <div style="text-align:justify;">Lade die verschiedenen ili2db-Varianten, ilivalidator, ili2c und INTERLIS-UML-Editor herunter.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a class="feature" href="download.html">
-            <div class="grid-item">
-                <div class="grid-item-paragraph">
-                    <div class="subgrid-container">
-                        <div class="subgrid-child">
-                            <span style="color:rgb(1, 68, 136);" class="material-icons-outlined md-192">file_download</span>
-                        </div>
-                        <div class="subgrid-child">
-                            <div class="grid-item-title">Download</div>
-                             <div style="text-align:justify;">Lade die verschiedenen ili2db-Varianten, ilivalidator, ili2c und INTERLIS-UML-Editor herunter.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a class="feature" href="download.html">
-            <div class="grid-item">
-                <div class="grid-item-paragraph">
-                    <div class="subgrid-container">
-                        <div class="subgrid-child">
-                            <span style="color:rgb(1, 68, 136);" class="material-icons-outlined md-192">file_download</span>
-                        </div>
-                        <div class="subgrid-child">
-                            <div class="grid-item-title">Download</div>
-                             <div style="text-align:justify;">Lade die verschiedenen ili2db-Varianten, ilivalidator, ili2c und INTERLIS-UML-Editor herunter.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
 
     </div>
 

@@ -10,7 +10,8 @@ body {
 }
 
 body, div {
-    font-family: Frutiger, 'Fira Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;   
+    font-family: Frutiger, 'Fira Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 18px;   
 }
 
 .container {
@@ -20,6 +21,68 @@ body, div {
     max-width: 95%;
     background-color: #FFFFFF;        
 }
+
+#title {
+	padding-top: 100px;
+	text-align: center;
+    color: #333333;	
+    font-family: 'Suez One', serif;
+    font-size: 48px;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    /*font-size: 0.9em;*/
+    font-family: sans-serif;
+    color: #333333;
+    width: 80%;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #F7F7F7;
+    color: #333333;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.fail-cell {
+    background-color: #FAA582;
+}
+
+.success-cell {
+    background-color: #92C5DE;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+/*
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+*/
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #F7F7F7;
+}
+
+/*
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+*/
+
+
 
 a.feature {
   display:block;
