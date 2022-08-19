@@ -42,16 +42,16 @@ public class MainController {
     public String show(Model model) {
         {
             Map<Check, Result> resultMap = Map.of(
-                    Check.ILISITE_XML,new Result(true), 
-                    Check.ILIMODELS_XML, new Result(false));
+                    Check.ILISITE_XML,new Result(true, null), 
+                    Check.ILIMODELS_XML, new Result(false, null));
             IliRepo iliRepo = new IliRepo("https://models.interlis.ch", resultMap);
             iliRepoRepository.save(iliRepo);
         }
         
         {
             Map<Check, Result> resultMap = Map.of(
-                    Check.ILISITE_XML,new Result(true), 
-                    Check.ILIMODELS_XML, new Result(true));
+                    Check.ILISITE_XML,new Result(true, null), 
+                    Check.ILIMODELS_XML, new Result(true, null));
             IliRepo iliRepo = new IliRepo("https://geo.so.ch/models", resultMap);
             iliRepoRepository.save(iliRepo);
         }

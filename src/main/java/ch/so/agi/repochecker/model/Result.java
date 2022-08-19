@@ -1,6 +1,8 @@
 package ch.so.agi.repochecker.model;
 
-public record Result(boolean valid) {
+import java.io.File;
+
+public record Result(boolean valid, File logFile) {
     
     // TODO more...
     
