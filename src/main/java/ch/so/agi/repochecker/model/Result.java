@@ -1,18 +1,28 @@
 package ch.so.agi.repochecker.model;
 
-import java.io.File;
+public class Result {
+    private boolean valid;
+    
+    private String logFile;
+    
+    public Result(boolean valid, String logFile) {
+        this.valid = valid;
+        this.logFile = logFile;
+    }
 
-public record Result(boolean valid, File logFile) {
-    
-    // TODO more...
-    
-//    private boolean valid;
-//
-//    public boolean isValid() {
-//        return valid;
-//    }
-//
-//    public void setValid(boolean valid) {
-//        this.valid = valid;
-//    }
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public String getLogFile() {
+        return logFile;
+    }
+
+    public void setLogFile(String logFile) {
+        this.logFile = logFile;
+    }    
 }

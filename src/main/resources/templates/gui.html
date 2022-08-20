@@ -25,67 +25,54 @@
             INTERLIS Repository Checker
         </div>
     
-	<table class="styled-table">
-	    <colgroup>
-	        <col span="1" style="width:40%">
-            <col span="1" style="width:20%">
-            <col span="1" style="width:20%">
-            <col span="1" style="width:20%">
-	    </colgroup>
-	    <thead>
-	        <tr>
-	            <th>Repository</th>
-                <th>ilisite.xml</th>
-                <th>ilimodels.xml</th>
-                <th>Models</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <tr th:each="iliRepo: ${repositories}">
-	            <td th:text="${iliRepo.key}" />
-                <td th:text="${iliRepo.value.results['ILISITE_XML'].valid}" />
-                <td th:attr="class=${iliRepo.value.results['ILIMODELS_XML'].valid ? 'success-cell' : 'fail-cell'}" 
-                    th:text="${iliRepo.value.results['ILIMODELS_XML'].valid}" />
-	        </tr>
-	    </tbody>
-	</table>
-
-
-    </div>
-
-
-    <!--
-        <div class="row table-responsive">
-            <table id="datasetTable" class="table">
-                <thead>
-                    <tr>
-                        <th style="padding-left:10px;padding-right:14px;">Gemeinde</th>
-                        <th style="padding-left:10px;padding-right:14px;">BFS-Nr.</th>
-                        <th style="padding-left:10px;padding-right:14px;">Lieferdatum</th>
-                        <th style="padding-left:10px;padding-right:14px;">Nachführungsgeometer</th>
-                        <th style="padding-left:10px;padding-right:14px;">Karte</th>
-                        <th style="padding-left:10px;padding-right:14px;">ITF-CH</th>
-                        <th style="padding-left:10px;padding-right:14px;">ITF-SO</th>
-                        <th style="padding-left:10px;padding-right:14px;">DXF</th>
-                        <th style="padding-left:10px;padding-right:14px;">SHP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="dataset: ${datasets}">
-                        <td th:text="${dataset.gem_name}">1</td>
-                        <td th:text="${dataset.gem_bfs}">Jack</td>
-                        <td th:text="${dataset.lieferdatum}">23</td>
-                        <td th:text="${dataset.nfgeometer}">AVE N</td>
-                        <td><a th:href="${dataset.pdf}" target="_blank"><img th:src="@{/images/pdficon_small.png}"/></a></td>
-                        <td><a th:href="${dataset.itfch}"><img th:src="@{/images/zip_icon.png}"/></a></td>
-                        <td><a th:href="${dataset.itfso}"><img th:src="@{/images/zip_icon.png}"/></a></td>
-                        <td><a th:href="${dataset.dxf}"><img th:src="@{/images/zip_icon.png}"/></a></td>
-                        <td><a th:href="${dataset.shp}"><img th:src="@{/images/zip_icon.png}"/></a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-  -->
+		<table class="styled-table">
+		    <colgroup>
+		        <col span="1" style="width:40%">
+	            <col span="1" style="width:20%">
+	            <col span="1" style="width:20%">
+	            <col span="1" style="width:20%">
+		    </colgroup>
+		    <thead>
+		        <tr>
+		            <th>Repository</th>
+	                <th>ilisite.xml</th>
+	                <th>ilimodels.xml</th>
+	                <th>Models</th>
+		        </tr>
+		    </thead>
+		        <tr th:each="iliRepo: ${repositories}">
+		            <td>
+	                   <span th:text="${iliRepo.ident}"/>
+	                   <span>&nbsp;</span>
+	                    <a class="black-link" th:href="${iliRepo.ident}" target="_blank">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+							    <rect width="16" height="16" style="fill:white;stroke:none" />
+							    <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+							    <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+							</svg>
+	                    </a>
+		            </td>
+		            
+	                <td th:attr="class=${iliRepo.results['ILISITE_XML'].valid ? 'success-cell' : 'fail-cell'}" > 
+	                    <span th:if="${!iliRepo.results['ILISITE_XML'].valid}">
+	                        <a th:href="${iliRepo.results['ILISITE_XML'].logFile}" class="black-link" target="_blank">Logfile</a>
+	                    </span>
+	                </td>
+	
+	                <td th:attr="class=${iliRepo.results['ILIMODELS_XML'].valid ? 'success-cell' : 'fail-cell'}" > 
+	                    <span th:if="${!iliRepo.results['ILIMODELS_XML'].valid}">
+	                        <a th:href="${iliRepo.results['ILIMODELS_XML'].logFile}" class="black-link" target="_blank">Logfile</a>
+	                    </span>
+	                </td>
+	                
+	                <td th:attr="class=${iliRepo.results['MODELS'].valid ? 'success-cell' : 'fail-cell'}" > 
+	                    <span th:if="${!iliRepo.results['MODELS'].valid}">
+	                        <a th:href="${iliRepo.results['MODELS'].logFile}" class="black-link" target="_blank">Logfile</a>
+	                    </span>
+	                </td>
+		        </tr>
+		    </tbody>
+		</table>
     </div>
 </body>
 

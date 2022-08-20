@@ -1,11 +1,14 @@
 package ch.so.agi.repochecker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import ch.so.agi.repochecker.model.IliRepo;
+import ch.so.agi.repochecker.model.IliRepos;
 
 @Repository
 public class IliRepoRepository {
@@ -16,14 +19,15 @@ public class IliRepoRepository {
     }
     
     public void save(IliRepo iliRepo) {
-        repositories.put(iliRepo.ident(), iliRepo);
+        repositories.put(iliRepo.getIdent(), iliRepo);
     }
     
     public IliRepo findIliRepoByIdent(String ident) {
         return repositories.get(ident);
     }
     
-    public Map<String, IliRepo> findAll() {
-        return repositories;
+    public List<IliRepo> findAll() {
+        // Momentan benötigten wir keine Map.
+        return new ArrayList<IliRepo>(repositories.values());
     }
 }

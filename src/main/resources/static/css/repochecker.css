@@ -40,7 +40,7 @@ body, div {
     color: #333333;
     width: 80%;
     min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);*/
 }
 
 .styled-table thead tr {
@@ -66,14 +66,34 @@ body, div {
     border-bottom: 1px solid #dddddd;
 }
 
+.black-link {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333333; 
+    text-decoration: underline !important;
+}
+
+a.black-link:hover {
+    color: #333333;
+    text-decoration: underline !important;
+}  
+
+a.black-link:visited {
+    color: #333333; 
+    text-decoration: underline !important;
+}  
+
+
 /*
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 */
+/*
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #F7F7F7;
 }
+*/
 
 /*
 .styled-table tbody tr.active-row {
@@ -84,71 +104,5 @@ body, div {
 
 
 
-a.feature {
-  display:block;
-  /*background-color: #ccc;*/
-  color: #000;
-  text-decoration:none;
-  /*padding:10px;
-  margin-bottom:1px;*/
-}
 
-a.feature:hover {
-  /*background-color: #ddd;*/
-}
-
-.grid-container {
-  display: grid;
-  /*grid-gap: 50px;*/
-  grid-column-gap: 100px;
-  grid-row-gap: 50px;
-  /*grid-template-columns: auto auto auto;*/
-  /*grid-template-columns: repeat(3, 1fr);*/
-  /*grid-template-columns: repeat(3, minmax(300px, 500px));*/
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  /*background-color: #2196F3;*/
-  padding: 40px 0px 100px 0px;
-}
-
-.grid-item {
-  /*background-color: rgba(66, 139, 202, 0.1);*/
-  /*border: 1px solid rgba(0, 0, 0, 0.8);*/
-  padding: 30px;
-  font-size: 18px;
-  text-align: justify;
-  border-radius:10px;
-  /*border: 1px solid #ccc; */
-  background-color: rgba(237, 237, 237, 0.3);
-  /*background-color: rgb(1, 68, 136);*/
-  transition: box-shadow .3s;
-  min-height: 240px;
-}
-
-.grid-item:hover {
-  /*box-shadow: 0 0 11px rgba(33,33,33,.2); */
-  /*border: 1px solid rgb(66, 139, 202)*/
-  /*background-color: rgba(239, 83, 80, 0.2);*/
-  background-color: rgba(237, 237, 237, 0.6);
-}
-
-.grid-item-title {
-  color: rgb(36, 38, 43);
-  /*color:white;*/
-  font-weight: 700;
-  padding-bottom: 20px;
-  font-size: 1.2rem;
-  text-align: right;
-}
-
-.grid-item-paragraph {
-  color: rgb(36, 38, 43);
-  /*color:white;*/
-  line-height: 1.7;
-}
-
-.subgrid-container {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-gap: 20px;
-}
 
