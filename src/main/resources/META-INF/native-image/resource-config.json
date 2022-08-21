@@ -1,0 +1,10 @@
+{
+  "resources":{
+  "includes":[
+    {"pattern": ".*\\.js$"},
+    {"pattern": ".*\\.css$"},        
+    {"pattern": ".*\\.png$"},        
+    {"pattern": ".*\\.ili$"}        
+  ]},
+  "bundles":[]
+}

@@ -8,9 +8,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.filter.ForwardedHeaderFilter;
+import org.springframework.nativex.hint.TypeHint;
+import org.springframework.nativex.hint.TypeAccess;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
+
+// String.class wegen split() beim properties file auslesen.
+@TypeHint(
+        types = {/*ch.so.agi.repochecker.model.IliRepos.class, 
+                ch.so.agi.repochecker.model.IliRepo.class,
+                ch.so.agi.repochecker.model.Result.class,
+                ch.so.agi.repochecker.model.Check.class,*/
+                java.lang.String.class},
+        access= {TypeAccess.DECLARED_METHODS, 
+              TypeAccess.DECLARED_FIELDS, 
+              TypeAccess.DECLARED_CONSTRUCTORS, 
+              TypeAccess.PUBLIC_METHODS,
+              TypeAccess.PUBLIC_FIELDS,
+              TypeAccess.PUBLIC_CONSTRUCTORS}               
+)
 @Configuration
 @EnableScheduling
 @ServletComponentScan

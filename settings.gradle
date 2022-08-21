@@ -5,4 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'repochecker'
+rootProject.name = 'interlis-repo-checker'

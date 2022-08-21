@@ -5,6 +5,8 @@ plugins {
     id 'org.springframework.experimental.aot' version '0.12.1'
 }
 
+apply from: "$rootDir/gradle/versioning.gradle"
+
 group = 'ch.so.agi.repochecker'
 
 sourceCompatibility = '17'

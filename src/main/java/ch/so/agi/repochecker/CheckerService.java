@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -120,13 +121,17 @@ public class CheckerService {
                     
                     // Modelle, die zur Prüfung benötigt werden (um nicht selbst von einem Repo
                     // abhängig zu sein).
-                    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-                    Resource[] resources = resolver.getResources("classpath:ili/*.ili");
-                    for (Resource resource : resources) {
-                        InputStream is = resource.getInputStream();
-                        File iliFile = Paths.get(workFolder.getAbsolutePath(), resource.getFilename()).toFile();
-                        Files.copy(is, iliFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    }
+//                    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+//                    Resource[] resources = resolver.getResources("*.ili");
+//                    for (Resource resource : resources) {
+//                        InputStream is = resource.getInputStream();
+//                        File iliFile = Paths.get(workFolder.getAbsolutePath(), resource.getFilename()).toFile();
+//                        Files.copy(is, iliFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//                    }
+                    
+                    copyResource("ili/IliSite09-20091119.ili", workFolder.getAbsolutePath());
+                    copyResource("ili/IliRepository09-20120220.ili", workFolder.getAbsolutePath());
+                    copyResource("ili/IliRepository20.ili", workFolder.getAbsolutePath());
 
                     String repos = e.getFilename();
                     // get list of current files in repository
@@ -153,7 +158,7 @@ public class CheckerService {
                         settings.setValue(Validator.SETTING_ILIDIRS,workFolder.getAbsolutePath() + ";%ITF_DIR;http://models.interlis.ch/;%JAR_DIR/ilimodels");
                         boolean valid = Validator.runValidation(ilisiteXmlFile.getAbsolutePath(), settings);
 
-                        ilisiteXmlResult = new Result(valid, ilisiteXmlLogFile.getAbsolutePath());
+                        ilisiteXmlResult = new Result(valid, ilisiteXmlLogFile.getAbsolutePath(), new Date());
                         resultMap.put(Check.ILISITE_XML, ilisiteXmlResult);
                     }
 
@@ -179,7 +184,7 @@ public class CheckerService {
                         settings.setValue(Validator.SETTING_ILIDIRS,workFolder.getAbsolutePath() + ";%ITF_DIR;http://models.interlis.ch/;%JAR_DIR/ilimodels");
                         boolean valid = Validator.runValidation(ilimodelsXmlFile.getAbsolutePath(), settings);
 
-                        ilimodelsXmlResult = new Result(valid, ilimodelsXmlLogFile.getAbsolutePath());
+                        ilimodelsXmlResult = new Result(valid, ilimodelsXmlLogFile.getAbsolutePath(), new Date());
                         resultMap.put(Check.ILIMODELS_XML, ilimodelsXmlResult);
                     }
 
@@ -415,7 +420,7 @@ public class CheckerService {
                         }
                         Files.writeString(Paths.get(modelsLogFile.getAbsolutePath()), "compile failed with files: "+failed+"\n", StandardOpenOption.APPEND);
                     }
-                    Result modelsResult = new Result(valid, modelsLogFile.getAbsolutePath());
+                    Result modelsResult = new Result(valid, modelsLogFile.getAbsolutePath(), new Date());
                     resultMap.put(Check.MODELS, modelsResult);
                     
                     IliRepo iliRepo = new IliRepo(repos, resultMap);
@@ -429,6 +434,12 @@ public class CheckerService {
         }
     }
  
+    private void copyResource(String resource, String targetDirectory) throws IOException {
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
+        File file = Paths.get(targetDirectory, new File(resource).getName()).toFile();
+        Files.copy(is, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+    
     private class MetaEntryProblem {
         private String modelName = null;
         private String tid = null;

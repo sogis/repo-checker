@@ -55,7 +55,7 @@ public class MainController {
 
     @Value("${app.workDirectoryPrefix}")
     private String workDirectoryPrefix;
-    
+        
     @GetMapping("/ping")
     public ResponseEntity<String> ping()  {
         return new ResponseEntity<String>("repo-checker", HttpStatus.OK);
@@ -95,7 +95,7 @@ public class MainController {
         }
     }
     
-    @GetMapping("/gui")
+    @GetMapping("/")
     public String show(Model model) {
 //        {
 //            Map<Check, Result> resultMap = Map.of(
@@ -137,7 +137,7 @@ public class MainController {
         return "gui";
     } 
 
-    @Scheduled(cron="0 0 */2 * * *")
+    @Scheduled(cron="${app.checkCronExpression}")
     //@Scheduled(cron="0 */2 * * * *")
     private void checkRepos() {
         try {

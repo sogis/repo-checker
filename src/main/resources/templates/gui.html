@@ -8,8 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link th:href="@{/css/fonts.css}" rel="stylesheet" />
     <link th:href="@{/css/repochecker.css}" rel="stylesheet" />
-    <link th:href="@{/css/repochecker.css}" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -21,23 +19,52 @@
 
 <body>
     <div class="container">
+    
+		<div class="logo">
+			<div>
+                <img th:src="@{/images/Logo.png}" alt="Logo Kanton Solothurn" style="max-width: 100%; min-width:200px;"/>
+			</div>
+		</div>
+
+		<div>
+			<span style="line-height:40px; vertical-align:middle;">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+	                <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/>
+				</svg>
+            </span>
+		
+			<ul class="breadcrumb">
+				<li>
+	                <a href="https://agi.so.ch">Home</a>
+				</li>
+				<!-- 
+				<li>
+	                <a href=".">Modellablage</a>
+				</li>
+				 -->
+				<li class="active">INTERLIS Repository Checker</li>
+			</ul>
+		</div>
+
         <div id=title>
             INTERLIS Repository Checker
         </div>
     
 		<table class="styled-table">
 		    <colgroup>
-		        <col span="1" style="width:40%">
-	            <col span="1" style="width:20%">
-	            <col span="1" style="width:20%">
-	            <col span="1" style="width:20%">
+		        <col span="1" style="width:30%">
+	            <col span="1" style="width:17%">
+	            <col span="1" style="width:17%">
+                <col span="1" style="width:17%">
+                <col span="1" style="width:19%">
 		    </colgroup>
 		    <thead>
 		        <tr>
 		            <th>Repository</th>
 	                <th>ilisite.xml</th>
 	                <th>ilimodels.xml</th>
-	                <th>Models</th>
+                    <th>Models</th>
+                    <th>Last Update</th>
 		        </tr>
 		    </thead>
 		        <tr th:each="iliRepo: ${repositories}">
@@ -70,6 +97,8 @@
 	                        <a th:href="${iliRepo.results['MODELS'].logFile}" class="black-link" target="_blank">Logfile</a>
 	                    </span>
 	                </td>
+	                
+	                <td th:text="${#temporals.format(iliRepo.results['ILIMODELS_XML'].lastUpdate, 'yyyy-MM-dd HH:mm:ss')}" />
 		        </tr>
 		    </tbody>
 		</table>
