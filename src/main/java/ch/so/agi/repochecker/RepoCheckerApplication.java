@@ -13,7 +13,6 @@ import org.springframework.nativex.hint.TypeAccess;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
 // String.class wegen split() beim properties file auslesen.
