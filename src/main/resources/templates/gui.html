@@ -98,7 +98,7 @@
 	                    </span>
 	                </td>
 	                
-	                <td th:text="${#temporals.format(iliRepo.results['ILIMODELS_XML'].lastUpdate, 'yyyy-MM-dd HH:mm:ss')}" />
+	                <td th:text="${#dates.format(iliRepo.results['ILIMODELS_XML'].lastUpdate, 'yyyy-MM-dd HH:mm:ss')}" />
 		        </tr>
 		    </tbody>
 		</table>

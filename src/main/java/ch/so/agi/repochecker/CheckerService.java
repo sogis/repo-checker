@@ -1,8 +1,10 @@
 package ch.so.agi.repochecker;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -249,6 +251,8 @@ public class CheckerService {
                                 continue;
                             }
                             File localIliFile = new File(tmpFolder, localIliFileInIliCache.getName());
+                            
+                            PrintStream old = System.err;
                             try {
                                 RepositoryAccess.copyFile(localIliFile, localIliFileInIliCache);
 
@@ -269,7 +273,18 @@ public class CheckerService {
                                                         ch.interlis.ili2c.config.FileEntryKind.ILIMODELFILE));
                                 ch.interlis.ili2c.Ili2c.logIliFiles(fileconfig);
                                 fileconfig.setGenerateWarnings(false);
+                                
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                PrintStream ps = new PrintStream(baos);
+                                System.setErr(ps);
+                                
                                 TransferDescription td = Main.runCompiler(fileconfig, userSettings);
+                                
+                                System.err.flush();
+                                System.setErr(old);
+                                
+                                Files.writeString(Paths.get(modelsLogFile.getAbsolutePath()), baos.toString(), StandardOpenOption.APPEND);
+
                                 if (td == null) {
                                     failedFiles.add(ilimodelsFile);
                                 } else {
@@ -372,6 +387,7 @@ public class CheckerService {
                                 Files.writeString(Paths.get(modelsLogFile.getAbsolutePath()), e1.getMessage()+"\n", StandardOpenOption.APPEND);
                                 failedFiles.add(ilimodelsFile);
                             } finally {
+                                System.setErr(old);
                                 localIliFile.delete();
                             }
                         } catch (RepositoryAccessException e1) {

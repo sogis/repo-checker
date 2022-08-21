@@ -11,7 +11,9 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.nativex.hint.TypeAccess;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 
 // String.class wegen split() beim properties file auslesen.
@@ -45,7 +47,11 @@ public class RepoCheckerApplication {
     
     @Bean 
     XmlMapper xmlMapper() {
-        return new XmlMapper(); 
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+//        xmlMapper.registerModule(new JavaTimeModule());
+
+        return xmlMapper; 
     }
     
     // Anwendung ist fertig gestartet.

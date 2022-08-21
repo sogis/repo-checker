@@ -5,10 +5,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 public class Result {
     private boolean valid;
     private String logFile;
-    private LocalDateTime lastUpdate;
+    private Date lastUpdate;
     
     public Result(boolean valid, String logFile) {
         this.valid = valid;
@@ -18,7 +22,7 @@ public class Result {
     public Result(boolean valid, String logFile, Date lastUpdate) {
         this.valid = valid;
         this.logFile = logFile;
-        this.lastUpdate = lastUpdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        this.lastUpdate = lastUpdate;
     }
 
     public boolean isValid() {
@@ -37,11 +41,11 @@ public class Result {
         this.logFile = logFile;
     }
 
-    public LocalDateTime getLastUpdate() {
+    public Date getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(LocalDateTime lastUpdate) {
+    public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
     }    
 }

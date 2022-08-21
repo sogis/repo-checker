@@ -61,12 +61,12 @@ public class MainController {
         return new ResponseEntity<String>("repo-checker", HttpStatus.OK);
     }
     
-    @GetMapping("/fubar")
-    public ResponseEntity<String> fubar() throws IOException  {
-        
-        checker.checkRepos();
-        return new ResponseEntity<String>("fubar", HttpStatus.OK);
-    }
+//    @GetMapping("/fubar")
+//    public ResponseEntity<String> fubar() throws IOException  {
+//        
+//        checker.checkRepos();
+//        return new ResponseEntity<String>("fubar", HttpStatus.OK);
+//    }
     
     @GetMapping(value="/repositories", produces=MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> repositories() throws IOException  {        
