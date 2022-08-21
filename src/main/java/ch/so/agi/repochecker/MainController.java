@@ -69,7 +69,7 @@ public class MainController {
 //    }
     
     @GetMapping(value="/repositories", produces=MediaType.APPLICATION_XML_VALUE)
-    public ResponseEntity<String> repositories() throws IOException  {        
+    public ResponseEntity<String> repositories() throws IOException  {  
         var iliRepoList = updateLogFileLocation(iliRepoRepository.findAll());
         var iliRepos = new IliRepos();
         iliRepos.setIliRepos(iliRepoList);
