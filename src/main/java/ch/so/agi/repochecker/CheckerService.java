@@ -74,7 +74,7 @@ public class CheckerService {
     public void checkRepos() throws IOException {
         for (String repository : repositories) {
             log.info("checking: " + repository);
-            this.checkRepo(repository);
+            this.checkRepo(repository.trim());
         } 
     }
     
@@ -83,9 +83,6 @@ public class CheckerService {
         userSettings.setValue(UserSettings.ILIDIRS, UserSettings.DEFAULT_ILIDIRS);
         Configuration config = new Configuration();
         
-//        repository = "https://models.kgk-cgc.ch";
-//        repository = "https://models.geo.bl.ch";
-//        repository = "https://geo.so.ch/models";
         config.addFileEntry(new FileEntry(repository, FileEntryKind.ILIMODELFILE));
         config.setAutoCompleteModelList(true);
      
@@ -123,14 +120,7 @@ public class CheckerService {
                     
                     // Modelle, die zur Prüfung benötigt werden (um nicht selbst von einem Repo
                     // abhängig zu sein).
-//                    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//                    Resource[] resources = resolver.getResources("*.ili");
-//                    for (Resource resource : resources) {
-//                        InputStream is = resource.getInputStream();
-//                        File iliFile = Paths.get(workFolder.getAbsolutePath(), resource.getFilename()).toFile();
-//                        Files.copy(is, iliFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//                    }
-                    
+                    // PathMatchingResourcePatternResolver funktioniert nicht mit native image.
                     copyResource("ili/IliSite09-20091119.ili", workFolder.getAbsolutePath());
                     copyResource("ili/IliRepository09-20120220.ili", workFolder.getAbsolutePath());
                     copyResource("ili/IliRepository20.ili", workFolder.getAbsolutePath());
