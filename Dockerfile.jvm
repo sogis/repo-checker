@@ -3,12 +3,13 @@ FROM bellsoft/liberica-openjdk-alpine-musl:17.0.4
 ARG UID=1001
 RUN adduser -S appuser -u $UID
 
-WORKDIR /work/
+ENV HOME=/app
+WORKDIR $HOME
 
-RUN chown $UID /work \
-    && chmod "g+rwX" /work \
-    && chown $UID:root /work
-COPY --chown=$UID:root build/libs/interlis-repo-checker-*-exec.jar /work/application.jar
+RUN chown $UID $HOME \
+    && chmod "g+rwX" $HOME \
+    && chown $UID:root $HOME
+COPY --chown=$UID:root build/libs/interlis-repo-checker-*-exec.jar $HOME/application.jar
 
 USER $UID
 EXPOSE 8080
