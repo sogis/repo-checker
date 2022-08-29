@@ -61,15 +61,11 @@ public class MainController {
         return new ResponseEntity<String>("repo-checker", HttpStatus.OK);
     }
     
-//    @GetMapping("/fubar")
-//    public ResponseEntity<String> fubar() throws IOException  {
-//        
-//        checker.checkRepos();
-//        return new ResponseEntity<String>("fubar", HttpStatus.OK);
-//    }
-    
     @GetMapping(value="/repositories", produces=MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<String> repositories() throws IOException  {  
+        // TODO: Das verändert die Werte in den Originaldaten. 
+        // Die Methode sollte vielleicht besser eine Kopie erstellen und
+        // in dieser die Werte verändern.
         var iliRepoList = updateLogFileLocation(iliRepoRepository.findAll());
         var iliRepos = new IliRepos();
         iliRepos.setIliRepos(iliRepoList);
@@ -97,22 +93,6 @@ public class MainController {
     
     @GetMapping("/")
     public String show(Model model) {
-//        {
-//            Map<Check, Result> resultMap = Map.of(
-//                    Check.ILISITE_XML,new Result(true, null), 
-//                    Check.ILIMODELS_XML, new Result(false, null));
-//            IliRepo iliRepo = new IliRepo("https://models.interlis.ch", resultMap);
-//            iliRepoRepository.save(iliRepo);
-//        }
-//        
-//        {
-//            Map<Check, Result> resultMap = Map.of(
-//                    Check.ILISITE_XML,new Result(true, null), 
-//                    Check.ILIMODELS_XML, new Result(true, null));
-//            IliRepo iliRepo = new IliRepo("https://geo.so.ch/models", resultMap);
-//            iliRepoRepository.save(iliRepo);
-//        }
-        
         var iliRepoList = updateLogFileLocation(iliRepoRepository.findAll());
         Collections.sort(iliRepoList, new Comparator<IliRepo>() {
             @Override
