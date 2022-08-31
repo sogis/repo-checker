@@ -118,7 +118,7 @@ public class MainController {
     } 
 
     @Scheduled(cron="${app.checkCronExpression}")
-    //@Scheduled(cron="0 */2 * * * *")
+    //@Scheduled(cron="0 */4 * * * *")
     private void checkRepos() {
         try {
             log.info("check repos...");
