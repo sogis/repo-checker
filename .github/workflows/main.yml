@@ -39,6 +39,7 @@ jobs:
           components: 'native-image'
           native-image-musl: 'true'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: 'gradle'
 
       - name: Build native image
         run: |
