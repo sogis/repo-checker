@@ -1,5 +1,6 @@
 package ch.so.agi.repochecker;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,6 +36,12 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 @SpringBootApplication
 public class RepoCheckerApplication {
 
+    @Value("${app.httpProxyHost}")
+    private String httpProxyHost;
+
+    @Value("${app.httpProxyPort}")
+    private String httpProxyPort;
+
 	public static void main(String[] args) {
 		SpringApplication.run(RepoCheckerApplication.class, args);
 	}
@@ -57,6 +64,16 @@ public class RepoCheckerApplication {
     @Bean
     CommandLineRunner init(CheckerService checker) {
         return args -> {
+            if (httpProxyHost != null && httpProxyHost.trim().length() != 0) {
+                System.setProperty("http.proxyHost", httpProxyHost);
+                System.setProperty("https.proxyHost", httpProxyHost);
+            }
+            
+            if (httpProxyPort != null && httpProxyPort.trim().length() != 0) {
+                System.setProperty("http.proxyPort", httpProxyPort);
+                System.setProperty("https.proxyPort", httpProxyPort);
+            }
+            
             checker.checkRepos();
         };
     }
