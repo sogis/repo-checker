@@ -25,7 +25,7 @@ class RepoCheckerApplicationTests {
     }
     
     @Test
-    public void index_Ok() throws Exception {
+    public void index_Ok() throws Exception {        
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/", String.class))
                 .contains("INTERLIS Repository Checker")
                 .contains("models.kgk-cgc.ch");

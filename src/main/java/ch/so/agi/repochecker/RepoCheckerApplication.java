@@ -92,13 +92,13 @@ public class RepoCheckerApplication {
                 
                 System.setProperty("http.proxyPassword", httpProxyPassword);
                 System.setProperty("https.proxyPassword", httpProxyPassword);
+                
+                Authenticator.setDefault(new Authenticator() {
+                    public PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(httpProxyUser, httpProxyPassword.toCharArray());
+                    }
+                });
             }
-            
-            Authenticator.setDefault(new Authenticator() {
-                public PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(httpProxyUser, httpProxyPassword.toCharArray());
-                }
-            });
             
             if (httpNonProxyHosts != null && httpNonProxyHosts.trim().length() != 0) {
                 System.setProperty("http.nonProxyHosts", httpNonProxyHosts);
