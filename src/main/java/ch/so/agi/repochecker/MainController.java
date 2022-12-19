@@ -73,7 +73,7 @@ public class MainController {
         return new ResponseEntity<String>(xmlString, HttpStatus.OK);
     }
     
-    @GetMapping("/logs/{key}/{filename}") 
+    @GetMapping("/results/{key}/{filename}") 
     public ResponseEntity<?> getLog(@PathVariable String key, @PathVariable String filename) {        
         var mediaType = new MediaType("text", "plain", StandardCharsets.UTF_8);
 
@@ -164,7 +164,7 @@ public class MainController {
     }
     
     private String getLogFileLocation(String logFileName) {
-        String LOG_ENDPOINT = "logs";
+        String LOG_ENDPOINT = "results";
          return fixUrl(getHost() + "/" + LOG_ENDPOINT + "/" + Utils.getLogFileUrlPathElement(logFileName));
     }
 

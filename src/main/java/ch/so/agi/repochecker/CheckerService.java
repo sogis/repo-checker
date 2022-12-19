@@ -111,9 +111,9 @@ public class CheckerService {
                             .createTempDirectory(new File(workDirectory).toPath(), workDirectoryPrefix)
                             .toFile();
 
-                    File ilisiteXmlLogFile = Paths.get(workFolder.getAbsolutePath(), "ilisite.xml.log").toFile();
-                    File ilimodelsXmlLogFile = Paths.get(workFolder.getAbsolutePath(), "ilimodels.xml.log").toFile();
-                    File modelsLogFile = Paths.get(workFolder.getAbsolutePath(), "models.log").toFile();
+                    File ilisiteXmlLogFile = Paths.get(workFolder.getAbsolutePath(), "ilisite.xml.txt").toFile();
+                    File ilimodelsXmlLogFile = Paths.get(workFolder.getAbsolutePath(), "ilimodels.xml.txt").toFile();
+                    File modelsLogFile = Paths.get(workFolder.getAbsolutePath(), "models.txt").toFile();
                     if(!modelsLogFile.exists()) {
                         modelsLogFile.createNewFile();
                     }
