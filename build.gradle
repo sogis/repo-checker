@@ -42,7 +42,7 @@ dependencies {
     
     implementation 'ch.interlis:ili2c-tool:5.3.0'
     implementation 'ch.interlis:ili2c-core:5.3.0'
-    implementation 'ch.interlis:ilivalidator:1.11.14'
+    implementation 'ch.interlis:ilivalidator:1.12.1'
     implementation 'com.vividsolutions:jts-core:1.14.0' // Warum nötig? 
     
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
