@@ -16,6 +16,20 @@ public class MainController {
         return new ResponseEntity<String>("interlis-repo-checker", HttpStatus.OK);
     }
     
-    // Modellieren visuell mit XML beginnen. Hilft eventuell.
+    
+    /*
+     * 
+     * <repository>
+     *   <endpoint>https://geo.so.ch/models/</endpoint>
+     *   <check>
+     *      <type>ilisite</type>
+     *      <success>false</success>
+     *      <logfile>/workdir/....</logfile>
+     *   </check>
+     * </repository>
+     * 
+     * 
+     * 
+     */
 
 }

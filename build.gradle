@@ -38,6 +38,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+	
     implementation 'ch.interlis:ili2c-tool:5.3.2'
     implementation 'ch.interlis:ili2c-core:5.3.2'
     implementation 'ch.interlis:ilivalidator:1.13.1'
