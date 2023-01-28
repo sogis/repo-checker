@@ -6,4 +6,5 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-public record Repository(String endpoint, @JacksonXmlElementWrapper(localName = "checks") @JacksonXmlProperty(localName = "check") List<Check> checks) {}
+@JacksonXmlRootElement(localName = "repositories")
+public record Repositories(@JacksonXmlElementWrapper(useWrapping = false) @JacksonXmlProperty(localName = "repository")  List<Repository> repositories) {}
