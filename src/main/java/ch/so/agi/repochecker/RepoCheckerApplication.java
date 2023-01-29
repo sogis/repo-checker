@@ -18,7 +18,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 @Configuration
 @EnableScheduling
 @SpringBootApplication
-public class RepocheckerApplication {
+public class RepoCheckerApplication {
 
     @Value("${app.httpProxyHost}")
     private String httpProxyHost;
@@ -36,7 +36,7 @@ public class RepocheckerApplication {
     private String httpNonProxyHosts;
 
 	public static void main(String[] args) {
-		SpringApplication.run(RepocheckerApplication.class, args);
+		SpringApplication.run(RepoCheckerApplication.class, args);
 	}
 
     @Bean

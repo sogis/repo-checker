@@ -49,17 +49,55 @@
                     min-width: 400px;
                 }
                 
+                .styled-table table {
+                    border-collapse: collapse;
+                }
+                
                 .styled-table thead tr {
                     background-color: #F7F7F7;
                     color: #333333;
                     text-align: left;
                 }
                 
+                .styled-table tbody tr {
+                    border-bottom: 1px solid #dddddd;
+                }
+                
                 .styled-table th,
                 .styled-table td {
                     padding: 12px 15px;
                 }
-                
+
+.badge-fail {
+    background-color: #FAA582;
+    color: #333333;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+    display: inline-block;
+    width: 80px;
+}
+
+.badge-success {
+    background-color: #92C5DE;
+    color: #333333;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+    display: inline-block;
+    width: 80px;
+}
+
+.summary-fail {
+    background-color: #FAA582; 
+    border: 1px solid white;
+}
+
+.summary-success {
+    background-color: #92C5DE; 
+    border: 1px solid white;
+}
+                                
                 .fail-cell {
                     background-color: #FAA582;
                 }
@@ -67,11 +105,7 @@
                 .success-cell {
                     background-color: #92C5DE;
                 }
-                
-                .styled-table tbody tr {
-                    border-bottom: 1px solid #dddddd;
-                }
-                
+                                
                 .black-link {
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -153,6 +187,21 @@
                             <th>Last Validation</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <xsl:for-each select="repository">
+                        <xsl:sort select="endpoint" data-type="text"/> 
+                            <tr>
+                                <td>
+                                    <xsl:value-of select="endpoint"/>
+                                </td>
+                                <td>
+                                    <xsl:value-of select="checks/check[type = 'ILISITE_XML']/success"/>
+                                </td>        
+                            </tr>
+                        </xsl:for-each>
+                        
+                    </tbody>
+
                 </table>
 
 
