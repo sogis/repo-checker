@@ -1,6 +1,8 @@
 package ch.so.agi.repochecker;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
@@ -39,6 +42,15 @@ public class MainController {
 
     }
     
+    @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
+    @ResponseBody
+    public String index() throws IOException {
+        Path filePath = Path.of("/Users/stefan/tmp/results.html");
+        String content = Files.readString(filePath);
+        return content;
+    }
+
+    
     // TODO
     // cleaner
-    }
+}

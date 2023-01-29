@@ -2,11 +2,8 @@ package ch.so.agi.repochecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import ch.ehi.basics.logging.EhiLogger;
@@ -17,17 +14,14 @@ import ch.interlis.ili2c.Ili2cSettings;
 import ch.interlis.ili2c.config.Configuration;
 import ch.interlis.ili2c.config.FileEntry;
 import ch.interlis.ili2c.config.FileEntryKind;
-import ch.interlis.ili2c.gui.UserSettings;
 import ch.interlis.ilirepository.IliManager;
 import ch.interlis.ilirepository.impl.RepositoryAccess;
 import ch.interlis.ilirepository.impl.RepositoryAccessException;
 import ch.interlis.iox_j.logging.FileLogger;
-import ch.interlis.iox_j.logging.StdLogger;
 import ch.so.agi.repochecker.model.Check;
 import ch.so.agi.repochecker.model.CheckType;
 import ch.so.agi.repochecker.model.Repositories;
 import ch.so.agi.repochecker.model.Repository;
-import jakarta.annotation.PostConstruct;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.Serializer;
@@ -232,7 +226,7 @@ public class CheckService {
 
             EhiLogger.getInstance().removeListener(fileLogger);
             
-            Check check = new Check(CheckType.MODELS, valid, logfile.getAbsolutePath(), new Date());
+            Check check = new Check(CheckType.MODELS, valid?false:true, logfile.getAbsolutePath(), new Date());
             checks.add(check);
         }
         
