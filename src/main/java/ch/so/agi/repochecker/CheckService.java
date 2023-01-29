@@ -61,39 +61,32 @@ public class CheckService {
     
     @Value("${app.workDirectoryPrefix}")
     private String workDirectoryPrefix;
+    
+    @Value("${app.resultDirectory}")
+    private String resultDirectory;
 
     @Autowired
     private XmlMapper xmlMapper;
 
     private String ILICACHE_FOLDER_PREFIX = ".ilicache_";
-    
-    private Map<String, Repository> repositoryMap = new HashMap<>();
-    
-    public Repositories getCheckedRepositories() {
-        List<Repository> repositoryList = repositoryMap.values().stream()
-                .collect(Collectors.toList());
-        Repositories repositories = new Repositories(repositoryList);
-        return repositories;
-    }
-    
+        
     public File checkRepos() {
+        List<Repository> repositoryList = new ArrayList<Repository>();
         for (String repository : repositories) {
             log.info("Checking: " + repository);
             try {
                 Repository checkRepository = checkRepo(repository.trim());
-                
-                // TODO Map wird unnötig?
-                repositoryMap.put(repository, checkRepository);
+                repositoryList.add(checkRepository);
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
             }
         }  
         
+        //var xmlString = xmlMapper.writeValueAsString(repositoryList);
+        
         // Wie atomar ist die XSL-Transformation?
         // Request der Seite vs. zeitgleiche XSL-Transformation?
-        List<Repository> repositoryList = repositoryMap.values().stream()
-                .collect(Collectors.toList());
         Repositories repositories = new Repositories(repositoryList);
         
         try {
@@ -105,7 +98,11 @@ public class CheckService {
             copyResource("xsl/xml2html.xsl", workFolder.getAbsolutePath());
             File xslFile = Paths.get(workFolder.getAbsolutePath(), "xml2html.xsl").toFile();
             
-            File htmlFile = new File("/Users/stefan/tmp/results.html");
+            if (!new File(resultDirectory).exists()) {
+                new File(resultDirectory).mkdirs();
+            }
+            
+            File htmlFile = Paths.get(resultDirectory, "result.html").toFile();
 
             Processor processor = new Processor(false);
             XsltCompiler compiler = processor.newXsltCompiler();

@@ -194,8 +194,23 @@
                         <xsl:sort select="endpoint" data-type="text"/> 
                             <tr>
                                 <td>
-                                    <!-- TODO: link auf Repo  -->
                                     <xsl:value-of select="endpoint"/>
+                                    <span>&#160;</span>
+                                    <span>&#160;</span>
+                                    <xsl:element name="a">
+                                        <xsl:attribute name="target">
+                                            <xsl:text>_blank</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="class">
+                                            <xsl:text>black-link</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="href"><xsl:value-of select="endpoint"/></xsl:attribute>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                            <rect width="16" height="16" style="fill:white;stroke:none"></rect>
+                                            <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"></path>
+                                            <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"></path>
+                                        </svg>
+                                    </xsl:element>                                    
                                 </td>
                                 <td>
                                     <xsl:choose>        
@@ -228,13 +243,26 @@
                                             </span> 
                                             <span>&#160;</span>
                                             <span>&#160;</span>
-                                            <a class="black-link" href="/details/capabilities/AG" target="_blank">
+                                            
+                                            <xsl:element name="a">
+                                                <xsl:attribute name="target">
+                                                    <xsl:text>_blank</xsl:text>
+                                                </xsl:attribute>
+                                                <xsl:attribute name="class">
+                                                    <xsl:text>black-link</xsl:text>
+                                                </xsl:attribute>
+                                                <xsl:attribute name="href">
+                                                    <xsl:variable name="seq" select="tokenize(checks/check[type = 'MODELS']/logfile,'/')"/>
+                                                    <xsl:value-of select="$seq[count($seq)-1]"/>
+                                                    <xsl:text>/</xsl:text>
+                                                    <xsl:value-of select="$seq[count($seq)]"/>
+                                                </xsl:attribute>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                                                     <rect width="16" height="16" style="fill:white;stroke:none"></rect>
                                                     <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"></path>
                                                     <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"></path>
                                                 </svg>
-                                            </a>
+                                            </xsl:element>                                    
                                         </xsl:otherwise>
                                     </xsl:choose>        
                                 </td>   
