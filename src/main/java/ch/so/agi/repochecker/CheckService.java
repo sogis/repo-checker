@@ -161,6 +161,10 @@ public class CheckService {
             } catch (RepositoryAccessException e) {
                 EhiLogger.logError(e.getMessage());
                 log.error(e.getMessage());
+                
+                Check check = new Check(CheckType.ILISITE_XML, null, logfile.getAbsolutePath(), new Date());
+                checks.add(check);
+
                 return null;
             }
             if (ilisiteXmlFile == null) {

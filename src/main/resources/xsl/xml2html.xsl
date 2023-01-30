@@ -89,25 +89,7 @@
     display: inline-block;
     width: 80px;
 }
-
-.summary-fail {
-    background-color: #FAA582; 
-    border: 1px solid white;
-}
-
-.summary-success {
-    background-color: #92C5DE; 
-    border: 1px solid white;
-}
-                                
-                .fail-cell {
-                    background-color: #FAA582;
-                }
-                
-                .success-cell {
-                    background-color: #92C5DE;
-                }
-                                
+        
                 .black-link {
                     overflow: hidden;
                     text-overflow: ellipsis;
