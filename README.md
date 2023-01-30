@@ -3,7 +3,7 @@
 ## Beschreibung
 
 
-Validiert die INTERLIS-Modellablagen. Es werden die beiden Dateien _ilisite.xml_ und _ilimodels.xml_ geprüft und sämtliche Modelle im Repository. Geprüft wird mit _ilivalidator_ und mit der Methode der Klasse _CheckReposIlis_.
+Validiert die INTERLIS-Modellablagen. Es werden die beiden Dateien _ilisite.xml_ und _ilimodels.xml_ geprüft und sämtliche Modelle im Repository. Geprüft wird mit _ilivalidator_ und mit der Methode der Klasse _CheckReposIlis_ des INTERLIS-Compilers _ili2c_.
 
 Achtung:
 - https://github.com/claeis/ilivalidator/issues/351
@@ -36,11 +36,77 @@ Die Anwendung kann am einfachsten mittels Env-Variablen gesteuert werden. Es ste
 
 Http Proxy: Siehe auch https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html
 
+### Java
+
+```
+java -jar build/libs/interlis-repo-checker-0.1.XXXX-exec.jar
+```
+
+### Native Image
+
+```
+./build/native/nativeCompile/interlis-repo-checker
+```
+
+### Docker
+
 
 ```
 docker run -e TZ=Europe/Zurich -p 8080:8080 sogis/interlis-repo-checker(-jvm)
 ```
 
 
+## Externe Abhängigkeiten
 
+Die zu prüfenden INTERLIS-Modellablagen. 
+
+
+## Konfiguration und Betrieb in der GDI
+
+@AndiS: todo
+
+## Interne Struktur
+
+@Stefan: todo
+
+Stichworte:
+- Spring Boot
+- ilivalidator
+- ili2c
+- XML -> XSLT -> HTML
+- Reverse Proxy wegen Url
+- http proxy (nicht wirklich getestet)
+
+## Entwicklung
+
+### Build
+
+#### JVM
+```
+./gradlew clean build
+```
+
+```
+docker build -t sogis/interlis-repo-checker-jvm:latest -f Dockerfile.jvm .
+```
+
+
+#### Native
+
+Wegen String-Funktion in SpEL und XSLT muss der Agent verwendet werden:
+
+```
 java -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image -jar build/libs/interlis-repo-checker-0.1.LOCALBUILD-exec.jar
+```
+
+```
+./gradlew clean aotTest nativeCompile -i
+```
+
+```
+docker build -t sogis/interlis-repo-checker:latest -f Dockerfile.native .
+```
+
+
+
+
