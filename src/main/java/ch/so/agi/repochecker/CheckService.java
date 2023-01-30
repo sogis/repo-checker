@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import ch.ehi.basics.logging.EhiLogger;
@@ -77,20 +78,19 @@ public class CheckService {
             log.info("Checking: " + repository);
             try {
                 Repository checkRepository = checkRepo(repository.trim());
-                // TODO: So verschwindet das Repo einfach. Dabei schien ja
-                // was grundlegend falsch gelaufen zu sein. Könnte/müsste man besser
-                // lösen.
-                if (checkRepository != null) {
-                    log.warn("Skipping: " + repository);
-                    repositoryList.add(checkRepository);                    
-                }
+                repositoryList.add(checkRepository);                    
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
             }
         }  
         
-        //var xmlString = xmlMapper.writeValueAsString(repositoryList);
+//        try {
+//            var xmlStringDebug = xmlMapper.writeValueAsString(repositoryList);
+//            System.out.println(xmlStringDebug);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         
         // Wie atomar ist die XSL-Transformation?
         // Request der Seite vs. zeitgleiche XSL-Transformation?
@@ -164,13 +164,19 @@ public class CheckService {
                 
                 Check check = new Check(CheckType.ILISITE_XML, null, logfile.getAbsolutePath(), new Date());
                 checks.add(check);
+                Repository checkedRepository = new Repository(repository, checks);
 
-                return null;
+                return checkedRepository;
             }
             if (ilisiteXmlFile == null) {
                 EhiLogger.logError("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
                 log.error("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
-                return null;
+                
+                Check check = new Check(CheckType.ILISITE_XML, null, logfile.getAbsolutePath(), new Date());
+                checks.add(check);
+                Repository checkedRepository = new Repository(repository, checks);
+
+                return checkedRepository;
             }
 
             EhiLogger.getInstance().removeListener(fileLogger);
@@ -197,12 +203,22 @@ public class CheckService {
             } catch (RepositoryAccessException e) {
                 EhiLogger.logError(e.getMessage());
                 log.error(e.getMessage());
-                return null;
+                
+                Check check = new Check(CheckType.ILIMODELS_XML, null, logfile.getAbsolutePath(), new Date());
+                checks.add(check);
+                Repository checkedRepository = new Repository(repository, checks);
+
+                return checkedRepository;
             }
             if (ilimodelsXmlFile == null) {
                 EhiLogger.logError("URL <"+repository+"> contains no"+IliManager.ILIMODELS_XML+"; ignored");
                 log.error("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
-                return null;
+                
+                Check check = new Check(CheckType.ILIMODELS_XML, null, logfile.getAbsolutePath(), new Date());
+                checks.add(check);
+                Repository checkedRepository = new Repository(repository, checks);
+
+                return checkedRepository;
             }
 
             EhiLogger.getInstance().removeListener(fileLogger);
