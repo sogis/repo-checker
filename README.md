@@ -18,6 +18,15 @@ Die Anwendung kann am einfachsten mittels Env-Variablen gesteuert werden. Es ste
 
 | Name | Beschreibung | Standard |
 |-----|-----|-----|
+| `LOG_LEVEL_ROOT` | Root Loglevel | `INFO` |
+| `LOG_LEVEL_SPRING` | Loglevel für Spring spezifische Klassen. | `INFO` |
+| `LOG_LEVEL_APP` | Loglevel für eigene Businesslogik. | `INFO` |
+| `CONNECT_TIMEOUT` | Anzahl Millisekunden bis zum Connect Timeout. | `5000` |
+| `READ_TIMEOUT` | Anzahl Millisekunden bis zum Read Timeout. | `5000` |
+| `REPOSITORIES` | Anzahl Millisekunden bis zum Read Timeout. | `5000` |
+
+
+
 | `CONFIG_FILE` | Vollständiger, absoluter Pfad der Themebereitstellungs-Konfigurations-XML-Datei. | `/config/datasearch.xml` |
 | `ITEMS_GEOJSON_DIR` | Verzeichnis, in das die GeoJSON-Dateien der Regionen gespeichert werden. Sämtliche JSON-Dateien in diesem Verzeichnis werden öffentlich exponiert. | `#{systemProperties['java.io.tmpdir']}` (= Temp-Verzeichnis des OS) |
 | `FILES_SERVER_URL` | Url des Servers, auf dem die Geodaten gespeichert sind. | `https://files.geo.so.ch` |
