@@ -23,8 +23,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Controller
 public class MainController {
@@ -48,10 +47,15 @@ public class MainController {
     @ResponseBody
     public String index() throws IOException {
         String content = checkService.getHtmlString();
-        return content;
+        
+        // Man kennt die Url der Anwendung erst hier (in einem Controller).
+        // Andere Variante wäre eine Env-Variable und bereits in der Transformation korrekt
+        // setzen.
+        String html = content.replace("href=\"/results", "href=\""+getHost()+"/results");
+        return html;
     }
     
-    @GetMapping("results/{key}/{filename}") 
+    @GetMapping("/results/{key}/{filename}") 
     public ResponseEntity<?> getLog(@PathVariable String key, @PathVariable String filename) {        
         var mediaType = new MediaType("text", "plain", StandardCharsets.UTF_8);
 
@@ -72,13 +76,13 @@ public class MainController {
     @Scheduled(cron="${app.checkCronExpression}")
     //@Scheduled(cron="0 */4 * * * *")
     private void checkRepos() {
-        log.info("check repos...");
+        log.info("Check repositories...");
         checkService.checkRepos();
     }
 
     @Scheduled(cron="0 0/2 * * * *")
     private void cleanUp() {    
-        log.debug("cleaner...");
+        log.debug("Deleting old files...");
         java.io.File[] tmpDirs = new java.io.File(workDirectory).listFiles();
         if(tmpDirs!=null) {
             for (java.io.File tmpDir : tmpDirs) {
@@ -98,5 +102,9 @@ public class MainController {
                 }
             }
         }
+    }
+    
+    private String getHost() {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
     }
 }

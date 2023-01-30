@@ -236,7 +236,7 @@
                                         </xsl:attribute>
                                         <xsl:attribute name="href">
                                             <xsl:variable name="seq" select="tokenize(checks/check[type = 'ILISITE_XML']/logfile,'/')"/>
-                                            <xsl:text>results/</xsl:text>
+                                            <xsl:text>/results/</xsl:text>
                                             <xsl:value-of select="$seq[count($seq)-1]"/>
                                             <xsl:text>/</xsl:text>
                                             <xsl:value-of select="$seq[count($seq)]"/>
@@ -272,7 +272,7 @@
                                         </xsl:attribute>
                                         <xsl:attribute name="href">
                                             <xsl:variable name="seq" select="tokenize(checks/check[type = 'ILIMODELS_XML']/logfile,'/')"/>
-                                            <xsl:text>results/</xsl:text>
+                                            <xsl:text>/results/</xsl:text>
                                             <xsl:value-of select="$seq[count($seq)-1]"/>
                                             <xsl:text>/</xsl:text>
                                             <xsl:value-of select="$seq[count($seq)]"/>
@@ -308,7 +308,7 @@
                                         </xsl:attribute>
                                         <xsl:attribute name="href">
                                             <xsl:variable name="seq" select="tokenize(checks/check[type = 'MODELS']/logfile,'/')"/>
-                                            <xsl:text>results/</xsl:text>
+                                            <xsl:text>/results/</xsl:text>
                                             <xsl:value-of select="$seq[count($seq)-1]"/>
                                             <xsl:text>/</xsl:text>
                                             <xsl:value-of select="$seq[count($seq)]"/>
