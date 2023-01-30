@@ -81,6 +81,7 @@ public class CheckService {
                 // was grundlegend falsch gelaufen zu sein. Könnte/müsste man besser
                 // lösen.
                 if (checkRepository != null) {
+                    log.warn("Skipping: " + repository);
                     repositoryList.add(checkRepository);                    
                 }
             } catch (IOException e) {
@@ -159,10 +160,12 @@ public class CheckService {
                 ilisiteXmlFile = reposAccess.getLocalFileLocation(repository, IliManager.ILISITE_XML, 0, null);
             } catch (RepositoryAccessException e) {
                 EhiLogger.logError(e.getMessage());
+                log.error(e.getMessage());
                 return null;
             }
             if (ilisiteXmlFile == null) {
                 EhiLogger.logError("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
+                log.error("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
                 return null;
             }
 
@@ -189,10 +192,12 @@ public class CheckService {
                 ilimodelsXmlFile = reposAccess.getLocalFileLocation(repository, IliManager.ILIMODELS_XML, 0, null);
             } catch (RepositoryAccessException e) {
                 EhiLogger.logError(e.getMessage());
+                log.error(e.getMessage());
                 return null;
             }
             if (ilimodelsXmlFile == null) {
                 EhiLogger.logError("URL <"+repository+"> contains no"+IliManager.ILIMODELS_XML+"; ignored");
+                log.error("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
                 return null;
             }
 
