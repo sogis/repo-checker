@@ -29,6 +29,7 @@ import net.sf.saxon.s9api.Xslt30Transformer;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,15 +63,18 @@ public class CheckService {
     @Value("${app.workDirectoryPrefix}")
     private String workDirectoryPrefix;
     
-    @Value("${app.resultDirectory}")
-    private String resultDirectory;
-
     @Autowired
     private XmlMapper xmlMapper;
+    
+    private String htmlString = new String();
 
     private String ILICACHE_FOLDER_PREFIX = ".ilicache_";
         
-    public File checkRepos() {
+    public String getHtmlString() {
+        return htmlString;
+    }
+    
+    public void checkRepos() {
         List<Repository> repositoryList = new ArrayList<Repository>();
         for (String repository : repositories) {
             log.info("Checking: " + repository);
@@ -97,25 +101,21 @@ public class CheckService {
                     .toFile();
             copyResource("xsl/xml2html.xsl", workFolder.getAbsolutePath());
             File xslFile = Paths.get(workFolder.getAbsolutePath(), "xml2html.xsl").toFile();
+                        
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             
-            if (!new File(resultDirectory).exists()) {
-                new File(resultDirectory).mkdirs();
-            }
-            
-            File htmlFile = Paths.get(resultDirectory, "result.html").toFile();
-
             Processor processor = new Processor(false);
             XsltCompiler compiler = processor.newXsltCompiler();
             XsltExecutable stylesheet = compiler.compile(new StreamSource(xslFile));
-            Serializer out = processor.newSerializer(htmlFile);
+            Serializer out = processor.newSerializer(baos);
 
             Xslt30Transformer transformer = stylesheet.load30();
             transformer.transform(new StreamSource(new StringReader(xmlString)), out);
 
-            return htmlFile;
+            htmlString = new String(baos.toByteArray(), "UTF-8");
+            
         } catch (IOException | SaxonApiException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
