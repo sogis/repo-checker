@@ -7,6 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +20,9 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,9 +75,34 @@ public class MainController {
         }
     }
 
-    // TODO
-    // check cron
-    
-    // TODO
-    // cleaner
+    @Scheduled(cron="${app.checkCronExpression}")
+    //@Scheduled(cron="0 */4 * * * *")
+    private void checkRepos() {
+        log.info("check repos...");
+        checkService.checkRepos();
+    }
+
+    @Scheduled(cron="0 0/2 * * * *")
+    private void cleanUp() {    
+        log.debug("cleaner...");
+        java.io.File[] tmpDirs = new java.io.File(workDirectory).listFiles();
+        if(tmpDirs!=null) {
+            for (java.io.File tmpDir : tmpDirs) {
+                if (tmpDir.getName().startsWith(workDirectoryPrefix)) {
+                    try {
+                        FileTime creationTime = (FileTime) Files.getAttribute(Paths.get(tmpDir.getAbsolutePath()), "creationTime");                    
+                        Instant now = Instant.now();
+                        
+                        long fileAge = now.getEpochSecond() - creationTime.toInstant().getEpochSecond();
+                        if (fileAge > 60*60*4) {
+                            log.info("deleting {}", tmpDir.getAbsolutePath());
+                            FileSystemUtils.deleteRecursively(tmpDir);
+                        }
+                    } catch (IOException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }
+            }
+        }
+    }
 }

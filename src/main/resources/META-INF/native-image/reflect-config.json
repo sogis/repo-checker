@@ -241,6 +241,7 @@
   "queryAllDeclaredMethods":true,
   "methods":[
     {"name":"getJsonFactory","parameterTypes":[] }, 
+    {"name":"readValues","parameterTypes":["com.fasterxml.jackson.core.JsonParser","com.fasterxml.jackson.core.type.ResolvedType"] }, 
     {"name":"readValues","parameterTypes":["com.fasterxml.jackson.core.JsonParser","com.fasterxml.jackson.core.type.TypeReference"] }, 
     {"name":"readValues","parameterTypes":["com.fasterxml.jackson.core.JsonParser","java.lang.Class"] }
   ]
@@ -1152,18 +1153,6 @@
 },
 {
   "name":"jakarta.ejb.EJB"
-},
-{
-  "name":"jakarta.enterprise.concurrent$ManagedExecutorService"
-},
-{
-  "name":"jakarta.enterprise.concurrent$ManagedScheduledExecutorService"
-},
-{
-  "name":"jakarta.enterprise.concurrent.ManagedExecutorService"
-},
-{
-  "name":"jakarta.enterprise.concurrent.ManagedScheduledExecutorService"
 },
 {
   "name":"jakarta.faces.context$FacesContext"
@@ -5276,6 +5265,10 @@
 },
 {
   "name":"org.springframework.scheduling.annotation.EnableScheduling",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"org.springframework.scheduling.annotation.Scheduled",
   "queryAllDeclaredMethods":true
 },
 {
