@@ -23,15 +23,18 @@ Die Anwendung kann am einfachsten mittels Env-Variablen gesteuert werden. Es ste
 | `LOG_LEVEL_APP` | Loglevel für eigene Businesslogik. | `INFO` |
 | `CONNECT_TIMEOUT` | Anzahl Millisekunden bis zum Connect Timeout. | `5000` |
 | `READ_TIMEOUT` | Anzahl Millisekunden bis zum Read Timeout. | `5000` |
-| `REPOSITORIES` | Anzahl Millisekunden bis zum Read Timeout. | `5000` |
+| `REPOSITORIES` | INTERLIS-Modellablagen, die geprüft werden sollen (kommasepariert). | Sämtlich mir bekannten Repositories. |
 
+| `WORK_DIRECTORY` | Root-Verzeichnis, in für jedes Repo und jeden Prüfdurchgang, temporäre Verzeichnisse erstellt werden. | `/tmp/` |
+| `WORK_DIRECTORY_PREFIX` | Prefix für die temporären Verzeichnisse. | `repocheck_` |
+| `CHECK_CRON_EXPRESSION` | Spring Boot Cron Expression für die Prüfung. | `0 0 */2 * * *` |
 
+| `HTTP_PROXY_HOST` | Hostname eines http proxy. | `` |
+| `HTTP_PROXY_PORT` | Port eines http proxy. | `` |
+| `HTTP_PROXY_USER` | Username eines http proxy. | `` |
+| `HTTP_PROXY_PASSWORD` | Passwort eines http proxy. | `` |
 
-| `CONFIG_FILE` | Vollständiger, absoluter Pfad der Themebereitstellungs-Konfigurations-XML-Datei. | `/config/datasearch.xml` |
-| `ITEMS_GEOJSON_DIR` | Verzeichnis, in das die GeoJSON-Dateien der Regionen gespeichert werden. Sämtliche JSON-Dateien in diesem Verzeichnis werden öffentlich exponiert. | `#{systemProperties['java.io.tmpdir']}` (= Temp-Verzeichnis des OS) |
-| `FILES_SERVER_URL` | Url des Servers, auf dem die Geodaten gespeichert sind. | `https://files.geo.so.ch` |
-
-
+Http Proxy: Siehe auch https://docs.oracle.com/javase/8/docs/api/java/net/doc-files/net-properties.html
 
 
 ```

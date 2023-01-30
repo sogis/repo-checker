@@ -30,9 +30,6 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 public class MainController {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private XmlMapper xmlMapper;
-
     @Value("${app.workDirectory}")
     private String workDirectory;
     

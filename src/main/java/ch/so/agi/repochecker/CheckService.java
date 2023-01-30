@@ -77,7 +77,12 @@ public class CheckService {
             log.info("Checking: " + repository);
             try {
                 Repository checkRepository = checkRepo(repository.trim());
-                repositoryList.add(checkRepository);
+                // TODO: So verschwindet das Repo einfach. Dabei schien ja
+                // was grundlegend falsch gelaufen zu sein. Könnte/müsste man besser
+                // lösen.
+                if (checkRepository != null) {
+                    repositoryList.add(checkRepository);                    
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
