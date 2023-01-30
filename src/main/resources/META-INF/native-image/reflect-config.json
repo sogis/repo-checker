@@ -242,8 +242,7 @@
   "methods":[
     {"name":"getJsonFactory","parameterTypes":[] }, 
     {"name":"readValues","parameterTypes":["com.fasterxml.jackson.core.JsonParser","com.fasterxml.jackson.core.type.ResolvedType"] }, 
-    {"name":"readValues","parameterTypes":["com.fasterxml.jackson.core.JsonParser","com.fasterxml.jackson.core.type.TypeReference"] }, 
-    {"name":"readValues","parameterTypes":["com.fasterxml.jackson.core.JsonParser","java.lang.Class"] }
+    {"name":"readValues","parameterTypes":["com.fasterxml.jackson.core.JsonParser","com.fasterxml.jackson.core.type.TypeReference"] }
   ]
 },
 {
@@ -1794,6 +1793,10 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"net.sf.saxon.functions.Exists",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"net.sf.saxon.functions.FormatDate",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -1803,6 +1806,10 @@
 },
 {
   "name":"net.sf.saxon.functions.StringJoin",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"net.sf.saxon.functions.StringLength_1",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
