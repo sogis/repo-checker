@@ -161,7 +161,8 @@ public class CheckService {
             } catch (RepositoryAccessException e) {
                 EhiLogger.logError(e.getMessage());
                 log.error(e.getMessage());
-                
+                EhiLogger.getInstance().removeListener(fileLogger);
+
                 Check check = new Check(CheckType.ILISITE_XML, null, logfile.getAbsolutePath(), new Date());
                 checks.add(check);
                 Repository checkedRepository = new Repository(repository, checks);
@@ -171,7 +172,8 @@ public class CheckService {
             if (ilisiteXmlFile == null) {
                 EhiLogger.logError("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
                 log.error("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
-                
+                EhiLogger.getInstance().removeListener(fileLogger);
+
                 Check check = new Check(CheckType.ILISITE_XML, null, logfile.getAbsolutePath(), new Date());
                 checks.add(check);
                 Repository checkedRepository = new Repository(repository, checks);
@@ -203,7 +205,8 @@ public class CheckService {
             } catch (RepositoryAccessException e) {
                 EhiLogger.logError(e.getMessage());
                 log.error(e.getMessage());
-                
+                EhiLogger.getInstance().removeListener(fileLogger);
+
                 Check check = new Check(CheckType.ILIMODELS_XML, null, logfile.getAbsolutePath(), new Date());
                 checks.add(check);
                 Repository checkedRepository = new Repository(repository, checks);
@@ -213,7 +216,8 @@ public class CheckService {
             if (ilimodelsXmlFile == null) {
                 EhiLogger.logError("URL <"+repository+"> contains no"+IliManager.ILIMODELS_XML+"; ignored");
                 log.error("URL <"+repository+"> contains no"+IliManager.ILISITE_XML+"; ignored");
-                
+                EhiLogger.getInstance().removeListener(fileLogger);
+
                 Check check = new Check(CheckType.ILIMODELS_XML, null, logfile.getAbsolutePath(), new Date());
                 checks.add(check);
                 Repository checkedRepository = new Repository(repository, checks);
