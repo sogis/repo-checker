@@ -329,7 +329,7 @@
                                     </xsl:if>     
                                 </td>   
                                 <td>
-                                    <xsl:value-of select="format-dateTime(checks/check[type = 'ILISITE_XML']/lastUpdate,'[Y0001]-[M01]-[M01] [H]:[m]')"/>
+                                    <xsl:value-of select="format-dateTime(checks/check[type = 'ILISITE_XML']/lastUpdate,'[Y0001]-[M01]-[D01] [H]:[m]')"/>
                                 </td>   
 
                             </tr>
