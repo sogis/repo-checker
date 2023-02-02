@@ -59,8 +59,8 @@ tasks.named('test') {
 nativeBuild {
     verbose = true
     fallback = false
-    buildArgs.add("--libc=musl")
-    buildArgs.add("--static")
+    //buildArgs.add("--libc=musl")
+    //buildArgs.add("--static")
 }
 
 import java.text.SimpleDateFormat
