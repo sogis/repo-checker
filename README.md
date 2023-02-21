@@ -24,11 +24,9 @@ Die Anwendung kann am einfachsten mittels Env-Variablen gesteuert werden. Es ste
 | `CONNECT_TIMEOUT` | Anzahl Millisekunden bis zum Connect Timeout. | `5000` |
 | `READ_TIMEOUT` | Anzahl Millisekunden bis zum Read Timeout. | `5000` |
 | `REPOSITORIES` | INTERLIS-Modellablagen, die geprüft werden sollen (kommasepariert). | Sämtlich mir bekannten Repositories. |
-
 | `WORK_DIRECTORY` | Root-Verzeichnis, in für jedes Repo und jeden Prüfdurchgang, temporäre Verzeichnisse erstellt werden. | `/tmp/` |
 | `WORK_DIRECTORY_PREFIX` | Prefix für die temporären Verzeichnisse. | `repocheck_` |
 | `CHECK_CRON_EXPRESSION` | Spring Boot Cron Expression für die Prüfung. | `0 0 */2 * * *` |
-
 | `HTTP_PROXY_HOST` | Hostname eines http proxy. | `` |
 | `HTTP_PROXY_PORT` | Port eines http proxy. | `` |
 | `HTTP_PROXY_USER` | Username eines http proxy. | `` |
