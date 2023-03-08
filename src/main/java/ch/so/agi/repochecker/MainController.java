@@ -68,8 +68,9 @@ public class MainController {
                     .contentType(mediaType)
                     .body(new InputStreamResource(is));
 
-        } catch (FileNotFoundException e) {
-            throw new IllegalStateException(e);  
+        } catch (FileNotFoundException e) {           
+            log.error(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
