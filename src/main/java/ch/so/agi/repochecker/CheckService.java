@@ -34,7 +34,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -255,6 +257,12 @@ public class CheckService {
                 valid = new CheckReposIlis().checkRepoIlis(config, userSettings);
             } catch (NullPointerException e) {
                 valid = false;
+                EhiLogger.logError(e.getMessage());
+                
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                EhiLogger.logError(sw.toString());
             }
 
             EhiLogger.getInstance().removeListener(fileLogger);
