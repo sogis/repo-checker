@@ -250,7 +250,12 @@ public class CheckService {
             config.addFileEntry(new FileEntry(repository, FileEntryKind.ILIMODELFILE));
             config.setAutoCompleteModelList(true);
 
-            boolean valid = new CheckReposIlis().checkRepoIlis(config, userSettings);
+            boolean valid;
+            try {
+                valid = new CheckReposIlis().checkRepoIlis(config, userSettings);
+            } catch (NullPointerException e) {
+                valid = false;
+            }
 
             EhiLogger.getInstance().removeListener(fileLogger);
             
