@@ -256,7 +256,7 @@ public class CheckService {
             try {
                 valid = new CheckReposIlis().checkRepoIlis(config, userSettings);
             } catch (NullPointerException e) {
-                valid = false;
+                valid = true; // CheckReposIlis liefert das Umgekehrte. Darum wirkt das schräg.
                 EhiLogger.logError(e.getMessage());
                 
                 StringWriter sw = new StringWriter();
