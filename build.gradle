@@ -28,8 +28,8 @@ repositories {
 
 configurations.all {
     resolutionStrategy {
-        force 'ch.interlis:ili2c-tool:5.3.2'
-        force 'ch.interlis:ili2c-core:5.3.2'    
+        force 'ch.interlis:ili2c-tool:5.4.1'
+        force 'ch.interlis:ili2c-core:5.4.1'    
         //force 'ch.interlis:iox-ili:1.21.11'    
     }
 }
@@ -42,9 +42,9 @@ dependencies {
 	
 	implementation 'net.sf.saxon:Saxon-HE:10.6'
 	
-    implementation 'ch.interlis:ili2c-tool:5.3.2'
-    implementation 'ch.interlis:ili2c-core:5.3.2'
-    implementation 'ch.interlis:ilivalidator:1.13.1'
+    implementation 'ch.interlis:ili2c-tool:5.4.1'
+    implementation 'ch.interlis:ili2c-core:5.4.1'
+    implementation 'ch.interlis:ilivalidator:1.14.1'
     implementation 'com.vividsolutions:jts-core:1.14.0' // Warum nötig? 
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
