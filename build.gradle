@@ -47,6 +47,8 @@ dependencies {
     implementation 'ch.interlis:ili2c-core:5.6.8'
     implementation 'ch.interlis:ilivalidator:1.15.0'
     implementation "ch.ehi:ehibasics:1.4.1"
+    implementation "ch.interlis:iox-ili:1.24.4"
+    implementation "antlr:antlr:2.7.7"
     implementation 'com.vividsolutions:jts-core:1.14.0' // Warum nötig? 
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
