@@ -1,19 +1,13 @@
-FROM bellsoft/liberica-openjdk-alpine-musl:17.0.6
+FROM registry.access.redhat.com/ubi9/openjdk-17-runtime:1.24
 
-ARG UID=1001
-RUN adduser -S appuser -u $UID
-
+USER 0
 ENV HOME=/app
-WORKDIR $HOME
+WORKDIR /app
 
-RUN chown $UID $HOME \
-    && chmod "g+rwX" $HOME \
-    && chown $UID:root $HOME
-COPY --chown=$UID:root build/libs/interlis-repo-checker-*-exec.jar $HOME/application.jar
+COPY --chown=0:0 --chmod=0444 build/libs/interlis-repo-checker-*-exec.jar ./application.jar
 
-USER $UID
+USER 1001:0
 EXPOSE 8080
-
 ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
 
-CMD java -XX:MaxRAMPercentage=80.0 -jar application.jar
+CMD ["java", "-XX:MaxRAMPercentage=80.0", "-XX:-UseBASE64Intrinsics", "-Duser.home=/tmp", "-jar", "application.jar"]

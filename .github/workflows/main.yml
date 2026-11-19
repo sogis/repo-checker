@@ -5,11 +5,18 @@ on:
   #  - cron: "0 * * * *"
   workflow_dispatch:
   push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+
+  pull_request:
+    branches: [main]
     paths-ignore:
       - '**.md'
 
 jobs:
   build-native:
+    if: github.event_name != 'pull_request'
     env:
       DOCKER_ACCOUNT: sogis
       DOCKER_REPO: interlis-repo-checker
@@ -97,16 +104,16 @@ jobs:
     env:
       DOCKER_ACCOUNT: sogis
       DOCKER_REPO: interlis-repo-checker-jvm
-      DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}} 
       BUILD_NUMBER: ${{ github.run_number }}
       VERSION: 0.1.${{ github.run_number }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -116,12 +123,15 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'liberica' 
           java-version: '17'
 
       - name: Build jar
+        env:
+          # An empty repository list after the application's comma split.
+          REPOSITORIES: ','
         run: |
           ./gradlew clean build
           ls -la build/libs/
@@ -132,43 +142,63 @@ jobs:
           name: reports
           path: build/reports/tests/
 
-      - name: Set up QEMU for amd64 and arm64
-        uses: docker/setup-qemu-action@v2
+      - name: Set up QEMU for ARM64
+        uses: docker/setup-qemu-action@v3
         with:
-          platforms: linux/amd64, linux/arm64
+          platforms: arm64
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and smoke-test AMD64 on PRs
+        if: github.event_name == 'pull_request'
+        run: |
+          docker buildx build --platform linux/amd64 --pull --load -f Dockerfile.jvm -t repo-checker:pr .
+          container=$(docker run -d --network none --user 1000830000:0 --read-only --tmpfs /tmp:rw,exec \
+            -e 'REPOSITORIES=,' -e CHECK_CRON_EXPRESSION=- repo-checker:pr)
+          trap 'docker logs "$container"; docker rm -f "$container"' EXIT
+          docker exec "$container" curl -fsS --retry 30 --retry-connrefused --retry-delay 2 \
+            http://127.0.0.1:8080/actuator/health/readiness | grep -F '"status":"UP"'
+          test "$(docker exec "$container" curl -fsS http://127.0.0.1:8080/ping)" = interlis-repo-checker
+          docker exec "$container" sh -ec '
+            test -r application.jar
+            test "$(stat -c %a application.jar)" = 444
+            mkdir -p /tmp/.ilicache
+            touch /tmp/.ilicache/check
+            tr "\000" "\n" < /proc/1/cmdline | grep -Fx -- "-Duser.home=/tmp"
+            tr "\000" "\n" < /proc/1/cmdline | grep -Fx -- "-XX:-UseBASE64Intrinsics"
+          '
 
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.DOCKER_ACCOUNT }}/${{ env.DOCKER_REPO }}
           labels: |
             org.opencontainers.image.title=${{ env.DOCKER_REPO }}
             org.opencontainers.image.version=${{ env.VERSION }}
-            org.opencontainers.image.base.name=docker.io/bellsoft/liberica-openjdk-alpine-musl:17.0.6
+            org.opencontainers.image.base.name=registry.access.redhat.com/ubi9/openjdk-17-runtime:1.24
           tags: |
             type=raw,value=${{ env.VERSION }},enable=true,priority=200
             type=raw,value=0.1,enable=true,priority=200
             type=raw,value=0,enable=true,priority=200
             type=raw,value=latest,enable=true,priority=200
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
         if: ${{ (github.ref == 'refs/heads/main') && (github.event_name != 'pull_request') && !env.ACT }}
 
-      - name: Multi-platform build and push
-        uses: docker/build-push-action@v2
+      - name: Build ARM64 on PRs or publish both platforms on main
+        uses: docker/build-push-action@v6
         with:
-          platforms:  linux/amd64, linux/arm64
+          platforms: ${{ github.event_name == 'pull_request' && 'linux/arm64' || 'linux/amd64,linux/arm64' }}
           context: .
           file: Dockerfile.jvm
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           pull: true
+          provenance: mode=min
           push: ${{ (github.ref == 'refs/heads/main') && (github.event_name != 'pull_request') && !env.ACT }}
