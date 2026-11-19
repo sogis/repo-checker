@@ -43,10 +43,17 @@ jobs:
         with:
           version: '22.3.0'
           java-version: '17'
-          components: 'native-image'
-          #native-image-musl: 'true'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: 'gradle'
+
+      - name: Install Native Image 22.3.0
+        run: |
+          component="$RUNNER_TEMP/native-image-installable-svm-java17-linux-amd64-22.3.0.jar"
+          curl --fail --silent --show-error --location --retry 3 --output "$component" \
+            https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.3.0/native-image-installable-svm-java17-linux-amd64-22.3.0.jar
+          printf '%s  %s\n' 'd1f5c58b65c57ad8a0c7da0c4569ce815ebf1ae503b0741ba1facf27b816d398' "$component" | sha256sum --check
+          "$GRAALVM_HOME/bin/gu" --non-interactive install --no-progress --local-file "$component"
+          "$GRAALVM_HOME/bin/native-image" --version
 
       - name: Build native image
         run: |
