@@ -81,6 +81,13 @@ jobs:
             type=raw,value=0,enable=true,priority=200
             type=raw,value=latest,enable=true,priority=200
 
+      - name: Enable Docker's containerd image store for release provenance
+        uses: docker/setup-docker-action@v5
+        with:
+          version: v28.0.4
+          set-host: true
+          daemon-config: '{"features":{"containerd-snapshotter":true}}'
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -94,6 +101,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           pull: true
           load: true
+          provenance: mode=min
 
       - name: Install x86-64 user-mode emulator
         run: |
