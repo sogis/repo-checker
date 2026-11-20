@@ -1,0 +1,11 @@
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.9
+
+WORKDIR /app
+COPY --chown=0:0 --chmod=0555 build/native/nativeCompile/interlis-repo-checker ./application
+
+ENV HOME=/app \
+    LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+USER 1001:0
+EXPOSE 8080
+
+CMD ["./application", "-Duser.home=/tmp"]

@@ -16,21 +16,19 @@ on:
 
 jobs:
   build-native:
-    if: github.event_name != 'pull_request'
     env:
       DOCKER_ACCOUNT: sogis
       DOCKER_REPO: interlis-repo-checker
-      DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}} 
-      BUILD_NUMBER: ${{ github.run_number }}
       VERSION: 0.1.${{ github.run_number }}
 
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -56,6 +54,8 @@ jobs:
           "$GRAALVM_HOME/bin/native-image" --version
 
       - name: Build native image
+        env:
+          REPOSITORIES: ','
         run: |
           ./gradlew clean aotTest nativeCompile -i
           ls -la build/native/nativeCompile/
@@ -63,14 +63,37 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ failure() }}
         with:
-          name: reports
+          name: reports-native
           path: build/reports/tests/
 
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_ACCOUNT }}/${{ env.DOCKER_REPO }}
+          labels: |
+            org.opencontainers.image.title=${{ env.DOCKER_REPO }}
+            org.opencontainers.image.version=${{ env.VERSION }}
+            org.opencontainers.image.base.name=registry.access.redhat.com/ubi9/ubi-minimal:9.9
+          tags: |
+            type=raw,value=${{ env.VERSION }},enable=true,priority=200
+            type=raw,value=0.1,enable=true,priority=200
+            type=raw,value=0,enable=true,priority=200
+            type=raw,value=latest,enable=true,priority=200
+
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Build the AMD64 container for the CPU check
-        run: docker buildx build --platform linux/amd64 --pull --load -f Dockerfile.native-alpaquita -t repo-checker:native-ci .
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          context: .
+          file: Dockerfile.native
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          pull: true
+          load: true
 
       - name: Install x86-64 user-mode emulator
         run: |
@@ -78,55 +101,41 @@ jobs:
           sudo apt-get install -y --no-install-recommends qemu-user-static
 
       - name: Smoke-test Native Image on x86-64-v2
+        shell: bash
         run: |
           readelf -n build/native/nativeCompile/interlis-repo-checker
           id=$(docker run -d --network none --user 1000830000:0 --read-only --tmpfs /tmp:rw,exec \
             -e REPOSITORIES=, -e CHECK_CRON_EXPRESSION=- \
             -v /usr/bin/qemu-x86_64-static:/qemu-x86_64-static:ro --entrypoint /qemu-x86_64-static \
-            repo-checker:native-ci -cpu Nehalem ./application)
+            "$DOCKER_ACCOUNT/$DOCKER_REPO:latest" -cpu Nehalem ./application -Duser.home=/tmp)
           trap 'docker logs "$id"; docker rm -f "$id"' EXIT
+          pid=$(docker inspect --format '{{.State.Pid}}' "$id")
+          curl_app() { sudo nsenter --target "$pid" --net curl -fsS --max-time 3 "http://127.0.0.1:8080$1"; }
           for _ in {1..30}; do
-            if docker exec "$id" wget -qO- -T 2 http://127.0.0.1:8080/actuator/health/readiness | jq -e '.status == "UP"'; then
-              test "$(docker exec "$id" wget -qO- -T 2 http://127.0.0.1:8080/ping)" = interlis-repo-checker
-              docker exec "$id" wget -qO- -T 2 http://127.0.0.1:8080/actuator/health/liveness | jq -e '.status == "UP"'
+            if curl_app /actuator/health/readiness | jq -e '.status == "UP"'; then
+              test "$(curl_app /ping)" = interlis-repo-checker
+              curl_app /actuator/health/liveness | jq -e '.status == "UP"'
               exit 0
             fi
             sleep 2
           done
           exit 1
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.DOCKER_ACCOUNT }}/${{ env.DOCKER_REPO }}
-          labels: |
-            org.opencontainers.image.title=${{ env.DOCKER_REPO }}
-            org.opencontainers.image.version=${{ env.VERSION }}
-            org.opencontainers.image.base.name=docker.io/bellsoft/alpaquita-linux-base:stream-glibc
-          tags: |
-            type=raw,value=${{ env.VERSION }},enable=true,priority=200
-            type=raw,value=0.1,enable=true,priority=200
-            type=raw,value=0,enable=true,priority=200
-            type=raw,value=latest,enable=true,priority=200
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && !env.ACT
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-        if: ${{ (github.ref == 'refs/heads/main') && (github.event_name != 'pull_request') && !env.ACT }}
 
       - name: Publish validated AMD64 build
-        if: ${{ (github.ref == 'refs/heads/main') && (github.event_name != 'pull_request') && !env.ACT }}
-        uses: docker/build-push-action@v2
-        with:
-          platforms: linux/amd64
-          context: .
-          file: Dockerfile.native-alpaquita
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: true
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && !env.ACT
+        env:
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          while IFS= read -r tag; do
+            docker push "$tag"
+          done <<< "$IMAGE_TAGS"
 
   build-jvm:
     env:
